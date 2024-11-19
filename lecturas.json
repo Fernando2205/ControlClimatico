@@ -1,0 +1,55 @@
+[
+    {
+        "fecha": "2024-11-14 10:00:00",
+        "temperatura": 25.3,
+        "humedad": 60
+    },
+    {
+        "fecha": "2024-11-14 11:00:00",
+        "temperatura": 26.1,
+        "humedad": 63
+    },
+    {
+        "fecha": "2024-11-14 12:00:00",
+        "temperatura": 27.8,
+        "humedad": 58
+    },
+    {
+        "fecha": "2024-11-14 13:00:00",
+        "temperatura": 28.5,
+        "humedad": 57
+    },
+    {
+        "fecha": "2024-11-14 14:00:00",
+        "temperatura": 29.2,
+        "humedad": 55
+    },
+
+
+
+    {
+        "fecha": "2024-11-14 10:00:00",
+        "temperatura": 35.0,
+        "humedad": 80
+    },
+    {
+        "fecha": "2024-11-14 11:00:00",
+        "temperatura": 15.0,
+        "humedad": 40
+    },
+    {
+        "fecha": "2024-11-14 12:00:00",
+        "temperatura": 25.0,
+        "humedad": 65
+    },
+    {
+        "fecha": "2024-11-14 13:00:00",
+        "temperatura": 29.0,
+        "humedad": 75
+    },
+    {
+        "fecha": "2024-11-14 14:00:00",
+        "temperatura": 32.0,
+        "humedad": 55
+    }
+]

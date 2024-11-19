@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Panel de Estadísticas</h2>
+
+{% if stats.mensaje %}
+    <p>{{ stats.mensaje }}</p>
+{% else %}
+    <h3>Temperatura</h3>
+    <p>Promedio: {{ stats['temperatura']['promedio'] }} °C</p>
+    <p>Máxima: {{ stats['temperatura']['maxima'] }} °C</p>
+    <p>Mínima: {{ stats['temperatura']['minima'] }} °C</p>
+    <p>Lecturas Críticas: {{ stats['criticos']['temperatura'] }}</p>
+
+    <h3>Humedad</h3>
+    <p>Promedio: {{ stats['humedad']['promedio'] }} %</p>
+    <p>Máxima: {{ stats['humedad']['maxima'] }} %</p>
+    <p>Mínima: {{ stats['humedad']['minima'] }} %</p>
+    <p>Lecturas Críticas: {{ stats['criticos']['humedad'] }}</p>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Alertas</h2>
+{% if alertas %}
+    <ul>
+        {% for alerta in alertas %}
+            <li>{{ alerta }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No hay alertas activas</p>
+{% endif %}
+{% endblock %}

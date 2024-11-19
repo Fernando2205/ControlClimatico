@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Cargar Archivo de Datos de Temperatura y Humedad</h2>
+
+<form action="{{ url_for('cargar_archivo') }}" method="post" enctype="multipart/form-data">
+    <label for="archivo">Selecciona un archivo JSON o CSV:</label>
+    <input type="file" id="archivo" name="archivo" accept=".json,.csv" required>
+    <button type="submit">Cargar Archivo</button>
+</form>
+
+{% if datos %}
+    <h3>Datos Cargados</h3>
+    <table>
+        <tr>
+            <th>Fecha</th>
+            <th>Temperatura (°C)</th>
+            <th>Humedad (%)</th>
+        </tr>
+        {% for dato in datos %}
+        <tr>
+            <td>{{ dato['fecha'].strftime('%Y-%m-%d %H:%M:%S') }}</td>
+            <td>{{ dato['temperatura'] }}</td>
+            <td>{{ dato['humedad'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+{% if datos_criticos %}
+    <h3>Datos Críticos</h3>
+    <table>
+        <tr>
+            <th>Tipo</th>
+            <th>Valor</th>
+            <th>Fecha</th>
+        </tr>
+        {% for dato in datos_criticos %}
+        <tr>
+            <td>{{ dato['tipo'] }}</td>
+            <td>{{ dato['valor'] }}</td>
+            <td>{{ dato['fecha'].strftime('%Y-%m-%d %H:%M:%S') }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No se encontraron datos críticos.</p>
+{% endif %}
+
+{% if graficos_url %}
+    <h3>Gráficos Generados</h3>
+    <img src="data:image/png;base64,{{ graficos_url }}" alt="Gráficos de Temperatura y Humedad">
+{% endif %}
+{% endblock %}

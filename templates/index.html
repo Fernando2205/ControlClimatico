@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Lecturas Actuales</h2>
+<table>
+    <tr>
+        <th>Tipo de Sensor</th>
+        <th>Fecha</th>
+        <th>Valor</th>
+    </tr>
+    {% for tipo, lecturas in lecturas.items() %}
+        {% for fecha, valor in lecturas %}
+        <tr>
+            <td>{{ tipo }}</td>
+            <td>{{ fecha.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+            <td>{{ valor }}</td>
+        </tr>
+        {% endfor %}
+    {% endfor %}
+</table>
+{% endblock %}

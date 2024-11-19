@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Temperatura y Humedad</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Control de Temperatura y Humedad</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Lecturas</a>
+            <a href="{{ url_for('alertas') }}">Alertas</a>
+            <a href="{{ url_for('graficas') }}">Gráficas</a>
+            <a href="{{ url_for('cargar_archivo') }}">Cargar Archivo</a> 
+            <a href="{{ url_for('enviar_correo') }}">Enviar por Correo</a>
+            <a href="{{ url_for('estadisticas') }}">Estadísticas</a> 
+
+        </nav>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
