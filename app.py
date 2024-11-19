@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from sensor import Sensor
 from controlador import ControladorClimatico
+import matplotlib
 import matplotlib.pyplot as plt
 import io
 import base64
@@ -13,7 +14,10 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 import os
+import matplotlib.dates as mdates
 
+# Uso del backend 'Agg' para evitar problemas con tkinter
+matplotlib.use('Agg')
 app = Flask(__name__)
 
 # Configuración de rangos óptimos
@@ -21,7 +25,6 @@ rango_optimo = {
     "temperatura": (18, 30),
     "humedad": (50, 70)
 }
-
 # Instancias del controlador y los sensores
 controlador = ControladorClimatico(rango_optimo)
 sensor_temperatura = Sensor("temperatura", "°C")
@@ -49,34 +52,63 @@ def graficas():
     controlador.tomar_lecturas()
     lecturas = controlador.obtener_lecturas()
 
-    fig, ax = plt.subplots(2, 1, figsize=(10, 8))
-
     fechas_temp = [fecha for fecha, _ in lecturas['temperatura']]
     valores_temp = [valor for _, valor in lecturas['temperatura']]
-    ax[0].plot(fechas_temp, valores_temp,
-               label='Temperatura (°C)', color='tab:red')
-    ax[0].set_title('Lecturas de Temperatura')
-    ax[0].set_xlabel('Fecha')
-    ax[0].set_ylabel('Temperatura (°C)')
-    ax[0].legend()
-    ax[0].grid()
-
     fechas_hum = [fecha for fecha, _ in lecturas['humedad']]
     valores_hum = [valor for _, valor in lecturas['humedad']]
-    ax[1].plot(fechas_hum, valores_hum, label='Humedad (%)', color='tab:blue')
-    ax[1].set_title('Lecturas de Humedad')
-    ax[1].set_xlabel('Fecha')
-    ax[1].set_ylabel('Humedad (%)')
-    ax[1].legend()
-    ax[1].grid()
 
-    img = io.BytesIO()
-    plt.savefig(img, format='png')
-    img.seek(0)
-    plot_url = base64.b64encode(img.getvalue()).decode('utf8')
-    plt.close(fig)
+    # Seleccionar los 30 datos más recientes
+    fechas_temp_recientes = seleccionar_recientes(fechas_temp)
+    valores_temp_recientes = seleccionar_recientes(valores_temp)
+    fechas_hum_recientes = seleccionar_recientes(fechas_hum)
+    valores_hum_recientes = seleccionar_recientes(valores_hum)
 
-    return render_template('graficas.html', plot_url=plot_url)
+    # Convertir fechas a objetos datetime para formateo adecuado
+    fechas_temp_recientes = [datetime.strptime(fecha.strftime(
+        '%Y-%m-%d %H:%M:%S'), '%Y-%m-%d %H:%M:%S') for fecha in fechas_temp_recientes]
+    fechas_hum_recientes = [datetime.strptime(fecha.strftime(
+        '%Y-%m-%d %H:%M:%S'), '%Y-%m-%d %H:%M:%S') for fecha in fechas_hum_recientes]
+
+    # Graficar temperatura
+    fig_temp, ax_temp = plt.subplots(figsize=(10, 4))
+    ax_temp.plot(fechas_temp_recientes, valores_temp_recientes,
+                 label='Temperatura (°C)', color='tab:red')
+    ax_temp.set_title('Lecturas de Temperatura')
+    ax_temp.set_xlabel('Fecha')
+    ax_temp.set_ylabel('Temperatura (°C)')
+    ax_temp.legend()
+    ax_temp.grid()
+    ax_temp.xaxis.set_major_formatter(
+        mdates.DateFormatter('%Y-%m-%d %H:%M:%S'))
+    fig_temp.autofmt_xdate()
+    plt.tight_layout()
+
+    img_temp = io.BytesIO()
+    fig_temp.savefig(img_temp, format='png')
+    img_temp.seek(0)
+    plot_url_temp = base64.b64encode(img_temp.getvalue()).decode('utf8')
+    plt.close(fig_temp)
+
+    # Graficar humedad
+    fig_hum, ax_hum = plt.subplots(figsize=(10, 4))
+    ax_hum.plot(fechas_hum_recientes, valores_hum_recientes,
+                label='Humedad (%)', color='tab:blue')
+    ax_hum.set_title('Lecturas de Humedad')
+    ax_hum.set_xlabel('Fecha')
+    ax_hum.set_ylabel('Humedad (%)')
+    ax_hum.legend()
+    ax_hum.grid()
+    ax_hum.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d %H:%M:%S'))
+    fig_hum.autofmt_xdate()
+    plt.tight_layout()
+
+    img_hum = io.BytesIO()
+    fig_hum.savefig(img_hum, format='png')
+    img_hum.seek(0)
+    plot_url_hum = base64.b64encode(img_hum.getvalue()).decode('utf8')
+    plt.close(fig_hum)
+
+    return render_template('graficas.html', plot_url_temp=plot_url_temp, plot_url_hum=plot_url_hum)
 
 
 @app.route('/cargar_archivo', methods=['GET', 'POST'])
@@ -93,6 +125,13 @@ def cargar_archivo():
                 datos = leer_csv(archivo)
             else:
                 return "Formato de archivo no soportado. Usa JSON o CSV.", 400
+
+            # Cargar los datos en el controlador
+            datos_por_tipo = {
+                "temperatura": [(dato['fecha'], dato['temperatura']) for dato in datos if dato['temperatura'] is not None],
+                "humedad": [(dato['fecha'], dato['humedad']) for dato in datos if dato['humedad'] is not None]
+            }
+            controlador.cargar_datos(datos_por_tipo)
 
     return render_template('cargar_archivo.html', datos=datos)
 
@@ -236,6 +275,11 @@ def leer_csv(archivo):
             {'fecha': fecha, 'temperatura': temperatura, 'humedad': humedad})
 
     return datos
+
+
+# Seleccionar los 30 datos más recientes
+def seleccionar_recientes(datos, n=10):
+    return datos[-n:]
 
 
 if __name__ == '__main__':
