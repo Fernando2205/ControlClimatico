@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect
+from flask import Flask, render_template, request
 from sensor import Sensor
 from controlador import ControladorClimatico
 import matplotlib.pyplot as plt
@@ -30,16 +30,19 @@ sensor_humedad = Sensor("humedad", "%")
 controlador.agregar_sensor(sensor_temperatura)
 controlador.agregar_sensor(sensor_humedad)
 
+
 @app.route('/')
 def index():
     controlador.tomar_lecturas()
     lecturas = controlador.obtener_lecturas()
     return render_template('index.html', lecturas=lecturas)
 
+
 @app.route('/alertas')
 def alertas():
     alertas = controlador.obtener_alertas()
     return render_template('alertas.html', alertas=alertas)
+
 
 @app.route('/graficas')
 def graficas():
@@ -50,7 +53,8 @@ def graficas():
 
     fechas_temp = [fecha for fecha, _ in lecturas['temperatura']]
     valores_temp = [valor for _, valor in lecturas['temperatura']]
-    ax[0].plot(fechas_temp, valores_temp, label='Temperatura (°C)', color='tab:red')
+    ax[0].plot(fechas_temp, valores_temp,
+               label='Temperatura (°C)', color='tab:red')
     ax[0].set_title('Lecturas de Temperatura')
     ax[0].set_xlabel('Fecha')
     ax[0].set_ylabel('Temperatura (°C)')
@@ -74,6 +78,7 @@ def graficas():
 
     return render_template('graficas.html', plot_url=plot_url)
 
+
 @app.route('/cargar_archivo', methods=['GET', 'POST'])
 def cargar_archivo():
     datos = []
@@ -90,6 +95,7 @@ def cargar_archivo():
                 return "Formato de archivo no soportado. Usa JSON o CSV.", 400
 
     return render_template('cargar_archivo.html', datos=datos)
+
 
 @app.route('/enviar_correo', methods=['GET', 'POST'])
 def enviar_correo():
@@ -110,6 +116,7 @@ def enviar_correo():
 
     return render_template('enviar_correo.html', mensaje=mensaje)
 
+
 def generar_archivo_lecturas():
     """Genera un archivo CSV con las últimas lecturas de temperatura y humedad."""
     lecturas = controlador.obtener_lecturas()
@@ -117,7 +124,8 @@ def generar_archivo_lecturas():
 
     for tipo, lista in lecturas.items():
         for fecha, valor in lista:
-            datos.append({'fecha': fecha.strftime('%Y-%m-%d %H:%M:%S'), 'tipo': tipo, 'valor': valor})
+            datos.append({'fecha': fecha.strftime(
+                '%Y-%m-%d %H:%M:%S'), 'tipo': tipo, 'valor': valor})
 
     # Generar un nombre de archivo simple
     archivo_path = os.path.join(os.getcwd(), 'ultimas_lecturas.csv')
@@ -209,9 +217,11 @@ def leer_json(archivo):
         fecha = datetime.strptime(entrada['fecha'], '%Y-%m-%d %H:%M:%S')
         temperatura = entrada.get('temperatura')
         humedad = entrada.get('humedad')
-        datos.append({'fecha': fecha, 'temperatura': temperatura, 'humedad': humedad})
+        datos.append(
+            {'fecha': fecha, 'temperatura': temperatura, 'humedad': humedad})
 
     return datos
+
 
 def leer_csv(archivo):
     # Lee y procesa el archivo CSV
@@ -222,9 +232,11 @@ def leer_csv(archivo):
         fecha = datetime.strptime(row['fecha'], '%Y-%m-%d %H:%M:%S')
         temperatura = row['temperatura']
         humedad = row['humedad']
-        datos.append({'fecha': fecha, 'temperatura': temperatura, 'humedad': humedad})
+        datos.append(
+            {'fecha': fecha, 'temperatura': temperatura, 'humedad': humedad})
 
     return datos
+
 
 if __name__ == '__main__':
     app.run(debug=True)
