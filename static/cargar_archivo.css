@@ -5,6 +5,12 @@ h2 {
     font-size: 24px;
 }
 
+h3{
+    color: var(--primary-dark);
+    margin: 20px 0 20px 0;
+    text-align: center;
+}
+
 form {
     background-color: var(--bg-card);
     max-width: 600px;
