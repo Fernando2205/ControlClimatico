@@ -1,22 +1,40 @@
 {% extends 'base.html' %}
 
+
 {% block content %}
-<h2>Panel de Estadísticas</h2>
 
-{% if stats.mensaje %}
-    <p>{{ stats.mensaje }}</p>
-{% else %}
-    <h3>Temperatura</h3>
-    <p>Promedio: {{ stats['temperatura']['promedio'] }} °C</p>
-    <p>Máxima: {{ stats['temperatura']['maxima'] }} °C</p>
-    <p>Mínima: {{ stats['temperatura']['minima'] }} °C</p>
-    <p>Lecturas Críticas: {{ stats['criticos']['temperatura'] }}</p>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estadisticas.css') }}">
+</head>
+<div class="stats-container">
+    <h2 class="stats-title">Panel de Estadísticas</h2>
 
-    <h3>Humedad</h3>
-    <p>Promedio: {{ stats['humedad']['promedio'] }} %</p>
-    <p>Máxima: {{ stats['humedad']['maxima'] }} %</p>
-    <p>Mínima: {{ stats['humedad']['minima'] }} %</p>
-    <p>Lecturas Críticas: {{ stats['criticos']['humedad'] }}</p>
-{% endif %}
+    {% if stats.mensaje %}
+    <p class="stats-message">{{ stats.mensaje }}</p>
+    {% else %}
+    <div class="stats-panel">
+        <div class="stats-section">
+            <h3 class="section-title">Temperatura</h3>
+            <div class="stats-data">
+                <p class="stat-item">Promedio: <span class="value">{{ stats['temperatura']['promedio'] }} °C</span></p>
+                <p class="stat-item">Máxima: <span class="value">{{ stats['temperatura']['maxima'] }} °C</span></p>
+                <p class="stat-item">Mínima: <span class="value">{{ stats['temperatura']['minima'] }} °C</span></p>
+                <p class="stat-item">Lecturas Críticas: <span class="value">{{ stats['criticos']['temperatura']
+                        }}</span></p>
+            </div>
+        </div>
 
+        <div class="stats-section">
+            <h3 class="section-title">Humedad</h3>
+            <div class="stats-data">
+                <p class="stat-item">Promedio: <span class="value">{{ stats['humedad']['promedio'] }} %</span></p>
+                <p class="stat-item">Máxima: <span class="value">{{ stats['humedad']['maxima'] }} %</span></p>
+                <p class="stat-item">Mínima: <span class="value">{{ stats['humedad']['minima'] }} %</span></p>
+                <p class="stat-item">Lecturas Críticas: <span class="value">{{ stats['criticos']['humedad'] }}</span>
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}

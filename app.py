@@ -185,7 +185,7 @@ def enviar_email_con_archivo(correo, archivo_path):
     msg['To'] = correo
     msg['Subject'] = asunto
 
-    # Agregar el cuerpo del mensaje (asegurar UTF-8)
+    # Agregar el cuerpo del mensaje
     cuerpo = "Adjunto encontrarás el archivo con las últimas lecturas de temperatura y humedad en un archivo cvs."
     msg.attach(MIMEText(cuerpo.encode('utf-8'), 'plain', 'utf-8'))
 

@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+<head>
+    <link rel="stylesheet" href="{{url_for('static', filename = 'graficas.css')}}">
+</head>
 <h2>Gráficas de Temperatura y Humedad</h2>
 <p>A continuación se muestran las lecturas de temperatura y humedad a lo largo del tiempo.</p>
 <h3>Gráfica de Temperatura</h3>

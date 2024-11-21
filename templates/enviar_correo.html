@@ -1,14 +1,20 @@
 {% extends 'base.html' %}
 
-{% block content %}
-<h2>Enviar Lecturas por Correo</h2>
-<form action="{{ url_for('enviar_correo') }}" method="post">
-    <label for="correo">Correo Electrónico:</label>
-    <input type="email" id="correo" name="correo" required>
-    <button type="submit">Enviar</button>
-</form>
+{% block head%}
+<link rel="stylesheet" href="{{ url_for('static', filename='enviar_correo.css') }}">
+{% endblock %}
 
-{% if mensaje %}
+{% block content %}
+<div class="email-container">
+    <h2>Enviar Lecturas por Correo</h2>
+    <form action="{{ url_for('enviar_correo') }}" method="post">
+        <label for="correo">Correo Electrónico:</label>
+        <input type="email" id="correo" name="correo" required>
+        <button type="submit">Enviar</button>
+    </form>
+
+    {% if mensaje %}
     <p>{{ mensaje }}</p>
-{% endif %}
+    {% endif %}
+</div>
 {% endblock %}

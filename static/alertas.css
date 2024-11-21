@@ -1,0 +1,40 @@
+h2 {
+    text-align: center;
+    color: var(--primary);
+    margin: 30px 0;
+    font-size: 24px;
+}
+
+ul {
+    list-style: none;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0;
+}
+
+li {
+    background-color: var(--bg-card);
+    border-left: 4px solid var(--accent-warning);
+    margin-bottom: 10px;
+    padding: 15px 20px;
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+    color: var(--text-primary);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+li:hover {
+    transform: translateX(5px);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
+p {
+    text-align: center;
+    color: var(--text-secondary);
+    background-color: var(--bg-card);
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 400px;
+    margin: 30px auto;
+    box-shadow: var(--shadow);
+}

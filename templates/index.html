@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
+{% block head %}
 
+<link rel="stylesheet" href="{{ url_for('static', filename = 'index.css') }}">
+{% endblock %}
 {% block content %}
 <h2>Lecturas Actuales</h2>
 <table>
@@ -9,13 +12,13 @@
         <th>Valor</th>
     </tr>
     {% for tipo, lecturas in lecturas.items() %}
-        {% for fecha, valor in lecturas %}
-        <tr>
-            <td>{{ tipo }}</td>
-            <td>{{ fecha.strftime('%Y-%m-%d %H:%M:%S') }}</td>
-            <td>{{ valor }}</td>
-        </tr>
-        {% endfor %}
+    {% for fecha, valor in lecturas %}
+    <tr>
+        <td>{{ tipo }}</td>
+        <td>{{ fecha.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+        <td>{{ valor }}</td>
+    </tr>
+    {% endfor %}
     {% endfor %}
 </table>
 {% endblock %}

@@ -1,14 +1,17 @@
 {% extends 'base.html' %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename = 'alertas.css') }}">
+{% endblock %}
 {% block content %}
 <h2>Alertas</h2>
 {% if alertas %}
-    <ul>
-        {% for alerta in alertas %}
-            <li>{{ alerta }}</li>
-        {% endfor %}
-    </ul>
+<ul>
+    {% for alerta in alertas %}
+    <li>{{ alerta }}</li>
+    {% endfor %}
+</ul>
 {% else %}
-    <p>No hay alertas activas</p>
+<p>No hay alertas activas</p>
 {% endif %}
 {% endblock %}

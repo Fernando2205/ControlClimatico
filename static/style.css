@@ -1,82 +1,69 @@
-/* Estilos generales */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
-    margin: 0;
-    padding: 0;
+:root {
+    
+    --primary: #2E7D32;
+    --primary-dark: #1B5E20;
+    --bg-main: #F5F7FA;
+    --bg-card: #FFFFFF;
+    --text-primary: #2C3E50;
+    --text-secondary: #5D6D7E;
+    --accent-success: #43A047;
+    --accent-warning: #FFA000;
+    --border-light: #E0E6ED;
+    --shadow: 0 2px 10px rgba(0,0,0,0.08);
 }
 
-/* Encabezado */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 header {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 0;
-    text-align: center;
+    background-color: var(--primary);
+    color: var(--bg-card);
+    padding: 20px 0;
+    box-shadow: var(--shadow);
 }
 
 header h1 {
-    margin: 0;
+    text-align: center;
     font-size: 24px;
+    margin-bottom: 15px;
 }
 
 nav {
-    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 0 20px;
 }
 
 nav a {
-    color: white;
+    color: var(--bg-card);
     text-decoration: none;
     padding: 8px 15px;
     border-radius: 5px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease;
 }
 
 nav a:hover {
-    background-color: #3e8e41;
+    background-color: var(--primary-dark);
 }
 
-/* Contenido principal */
 main {
+    flex: 1;
     padding: 20px;
-}
-
-/* Tabla de lecturas */
-table {
+    max-width: 1200px;
+    margin: 0 auto;
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-table, th, td {
-    border: 1px solid #ddd;
-}
-
-th, td {
-    padding: 10px;
-    text-align: left;
-}
-
-th {
-    background-color: #4CAF50;
-    color: white;
-}
-
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-/* Alertas */
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-ul li {
-    background-color: #ffdddd;
-    color: #a94442;
-    margin: 5px 0;
-    padding: 10px;
-    border-left: 5px solid #a94442;
-    border-radius: 4px;
 }
